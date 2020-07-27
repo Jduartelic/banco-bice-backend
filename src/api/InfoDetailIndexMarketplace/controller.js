@@ -39,6 +39,7 @@ const getDetailsValues = async (body) => {
 
   await Object.keys(historyData).map((item, index) => {
     let labelDataSet = "";
+    let val = 0;
     const date = new Date(item * 1000);
     const formattedDate = moment(date).format("DD/MM/YYYY");
     responseData.values = {
@@ -50,10 +51,14 @@ const getDetailsValues = async (body) => {
     if (index === 1) {
       labelDataSet = getFormatLabelChart(historyData, 0);
 
+      while (labelDataSet === "Invalid date") {
+        labelDataSet = getFormatLabelChart(historyData, val);
+        val++;
+      }
+
       responseData.chartData.labelsChart.push(labelDataSet);
       responseData.chartData.dataSetLabels.push(labelDataSet);
     } else if (index === maxValue - 1) {
-      let val = 0;
       labelDataSet = getFormatLabelChart(historyData, maxValue);
 
       while (labelDataSet === "Invalid date") {
